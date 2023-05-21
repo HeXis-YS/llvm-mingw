@@ -113,24 +113,4 @@ FLAGS="$FLAGS -stdlib=libc++"
 FLAGS="$FLAGS -fuse-ld=lld"
 FLAGS="$FLAGS --end-no-unused-arguments"
 
-# Initialize the variable to store processed parameters
-processed_params="-O3 -march=skylake -mtune=skylake -flto=full -fuse-ld=lld"
-
-# Iterate over the input parameters
-for param in "$@"; do
-    # Check if the parameter starts with "-O"
-    case $param in
-        -O*)
-            # Check if the parameter is equal to "-Ofast"
-            if [ "$param" != "-Ofast" ]; then
-                # Ignore the parameter
-                continue
-            fi
-            ;;
-    esac
-
-    # Append the processed parameter to the variable
-    processed_params="$processed_params $param"
-done
-
-$CCACHE "$CLANG" $FLAGS "$processed_params" $LINKER_FLAGS
+$CCACHE "$CLANG" $FLAGS "$@" $LINKER_FLAGS
